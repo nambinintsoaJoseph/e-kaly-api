@@ -1,5 +1,5 @@
 CREATE TABLE Utilisateur (
-    id_utilisateur NUMBER PRIMARY KEY,
+    id_utilisateur NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nom VARCHAR2(50) NOT NULL,
     prenom VARCHAR2(50) NOT NULL,
     email VARCHAR2(100) UNIQUE NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE Utilisateur (
 );
 
 CREATE TABLE Repas (
-    id_repas NUMBER PRIMARY KEY,
+    id_repas NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     id_utilisateur NUMBER NOT NULL,
     nom VARCHAR2(100) NOT NULL,
     description VARCHAR2(500),
@@ -30,7 +30,7 @@ CREATE TABLE Gerant (
 );
 
 CREATE TABLE Commande (
-    id_commande NUMBER PRIMARY KEY,
+    id_commande NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     date_commande DATE DEFAULT SYSDATE NOT NULL,
     quantite NUMBER NOT NULL CHECK (quantite > 0),
     id_utilisateur NUMBER NOT NULL,
