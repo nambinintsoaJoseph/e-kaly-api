@@ -56,3 +56,47 @@ Echec
     "message": "Echec d'authentification."
 }
 ```
+
+<h2>Repas</h2>
+
+<h4>Ajouter un repas (gerant)</h4> 
+
+```raw
+POST http://localhost/e-kaly/api/routes/repas/ajouter.php
+```
+
+Headers
+
+```raw
+Content-Type: multipart/form-data
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI...
+```
+
+Body 
+
+```raw
+multipart/form-data 
+
+nom (text) : "string" 
+description (text) : "string" 
+photo (file) : Choose a file... 
+prix (text) : "string" 
+```
+
+Succès 
+
+```json
+{
+    "sucess": true,
+    "message": "Repas créé avec succès"
+}
+``` 
+
+Echec 
+
+```json
+{
+    "success": false,
+    "message": "Accès refusé, vous ne pouvez pas effectuer cette action."
+}
+```

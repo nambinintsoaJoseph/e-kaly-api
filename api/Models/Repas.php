@@ -5,6 +5,7 @@ namespace App\Models;
 class Repas 
 {
     private $id_repas; 
+    private $id_utilisateur; 
     private $nom; 
     private $description;
     private $photo; 
@@ -18,6 +19,18 @@ class Repas
     public function setId_repas($id_repas)
     {
         $this->id_repas = $id_repas;
+
+        return $this;
+    }
+
+     public function getId_utilisateur()
+    {
+        return $this->id_utilisateur;
+    }
+ 
+    public function setId_utilisateur($id_utilisateur)
+    {
+        $this->id_utilisateur = $id_utilisateur;
 
         return $this;
     }
