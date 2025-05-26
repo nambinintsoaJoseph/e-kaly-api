@@ -13,24 +13,48 @@ class UtilisateurDAO
     }
 
     /**
-     * Récupère un utilisateur par son ID
+     * Authentifier un utilisateur
+     * @return Utilisateur|null Retourne l'utilisateur si authentification réussie, sinon null
      */
-    public function getById(int $id): ?Utilisateur 
+    public function authenticate($email, $mot_passe): ?Utilisateur
     {
         $conn = $this->db->getDatabase();
-        $sql = "SELECT id_utilisateur, nom, email, role FROM utilisateur WHERE id_utilisateur = :id";
+        $sql = "SELECT * FROM utilisateur WHERE email = :email";
+
         $stmt = oci_parse($conn, $sql);
-        oci_bind_by_name($stmt, ':id', $id);
+
+        oci_bind_by_name($stmt, ':email', $email);
         
-        if (!oci_execute($stmt)) {
-            $error = oci_error($stmt);
-            throw new \RuntimeException("Erreur Oracle [getById]: " . $error['message']);
+        if (!oci_execute($stmt)) 
+        {
+            error_log("Erreur Oracle: " . oci_error($stmt)['message']);
+            return null;
         }
 
-        $userData = oci_fetch_assoc($stmt);
+        $row = oci_fetch_assoc($stmt);
         oci_free_statement($stmt);
 
-        return $userData ? new Utilisateur($userData) : null;
+        // Si l'utilisateur n'existe pas 
+        if (!$row) 
+        {
+            return null;
+        }
+
+        // Si l'utilisateur existe mais que le mot de passe ne correspond pas
+        if (!password_verify($mot_passe, $row['MOT_PASSE'])) 
+        {
+            return null;
+        }
+
+        // Si authentification réussie
+        $authenticatedUser = new Utilisateur();
+        $authenticatedUser->setId_utilisateur($row['ID_UTILISATEUR'])
+                     ->setNom($row['NOM'])
+                     ->setPrenom($row['PRENOM'])
+                     ->setEmail($row['EMAIL'])
+                     ->setRole($row['ROLE']);
+
+        return $authenticatedUser;
     }
 
     /**
