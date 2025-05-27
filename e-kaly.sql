@@ -31,17 +31,17 @@ CREATE TABLE Gerant (
 
 CREATE TABLE Commande (
     id_commande NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    date_commande DATE DEFAULT SYSDATE NOT NULL,
-    quantite NUMBER NOT NULL CHECK (quantite > 0),
+    date_commande DATE DEFAULT SYSDATE NOT NULL, 
     id_utilisateur NUMBER NOT NULL,
     FOREIGN KEY (id_utilisateur) REFERENCES Utilisateur(id_utilisateur)
 );
 
--- Table d'association (Commande ---1..n-----------avoir-----------1...n--- Repas)
+-- Table d'association (Commande ---1..n-----------avoir-----------1..n--- Repas )
 CREATE TABLE CommandeRepas (
-    id_commande NUMBER NOT NULL,
-    id_repas NUMBER NOT NULL,
-    PRIMARY KEY (id_commande, id_repas),
-    FOREIGN KEY (id_commande) REFERENCES Commande(id_commande),
-    FOREIGN KEY (id_repas) REFERENCES Repas(id_repas)
-);
+    id_commande_repas NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 
+    id_repas NUMBER NOT NULL, 
+    id_commande NUMBER NOT NULL, 
+    quantite NUMBER NOT NULL CHECK (quantite > 0),
+    FOREIGN KEY (id_repas) REFERENCES Repas(id_repas), 
+    FOREIGN KEY (id_commande) REFERENCES Commande(id_commande)
+); 
