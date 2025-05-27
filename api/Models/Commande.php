@@ -7,6 +7,7 @@ class Commande
     private $id_commande; 
     private $date; 
     private $quantite; 
+    private $id_utilisateur;
 
     public function getId_commande()
     {
@@ -40,6 +41,18 @@ class Commande
     public function setQuantite($quantite)
     {
         $this->quantite = $quantite;
+
+        return $this;
+    }
+
+    public function getId_utilisateur()
+    {
+        return $this->id_utilisateur;
+    }
+
+    public function setId_utilisateur($id_utilisateur)
+    {
+        $this->id_utilisateur = $id_utilisateur;
 
         return $this;
     }

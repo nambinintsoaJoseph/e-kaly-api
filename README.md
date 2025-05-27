@@ -142,7 +142,7 @@ Echec
 }
 ``` 
 
-<h4>Supprimer un repas</h4> 
+<h4>Supprimer un repas (gerant)</h4> 
 
 ```raw
 DELETE http://localhost/e-kaly/api/routes/repas/supprimer.php?id_repas={number}
@@ -172,3 +172,39 @@ Echec
     "message": "Erreur de la suppression du repas."
 }
 ``` 
+
+<h2>Commande</h2> 
+
+<h4>Création d'une commande (client)</h4> 
+
+Header
+
+```raw
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI...
+```
+
+
+```raw
+POST http://localhost/e-kaly/api/routes/commande/creer.php
+``` 
+
+id_utilisateur récuperé depuis le token
+
+Succès 
+
+```json 
+{
+    "success": true,
+    "message": "Commande créée avec succès."
+}
+``` 
+
+Echec 
+
+```json
+{
+    "success": false, 
+    "message": "Erreur de la création du commande."
+}
+```
