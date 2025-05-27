@@ -100,3 +100,44 @@ Echec
     "message": "Accès refusé, vous ne pouvez pas effectuer cette action."
 }
 ```
+
+<h4>Modifier un repas (gerant)</h4> 
+
+```raw
+PUT http://localhost/e-kaly/api/routes/repas/modifier.php?id_repas={number}
+``` 
+
+Headers 
+
+```raw
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI...
+```
+
+Body 
+
+```json  
+{
+    "nom": "string", 
+    "description": "string", 
+    "prix": number
+}
+``` 
+
+Succès 
+
+```json
+{
+    "success": true,
+    "message": "Repas modifié avec succès."
+}
+``` 
+
+Echec 
+
+```json 
+{
+    "success": false, 
+    "message": "Accès refusé, vous ne pouvez pas effectuer cette action."
+}
+``` 
