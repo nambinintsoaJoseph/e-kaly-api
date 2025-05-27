@@ -141,3 +141,34 @@ Echec
     "message": "Accès refusé, vous ne pouvez pas effectuer cette action."
 }
 ``` 
+
+<h4>Supprimer un repas</h4> 
+
+```raw
+DELETE http://localhost/e-kaly/api/routes/repas/supprimer.php?id_repas={number}
+```
+
+Headers
+
+```raw
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI...
+```
+
+Succès 
+
+```json
+{
+    "success": true,
+    "message": "Repas supprimé avec succès."
+}
+```
+
+Echec 
+
+```json
+{
+    "success": false, 
+    "message": "Erreur de la suppression du repas."
+}
+``` 

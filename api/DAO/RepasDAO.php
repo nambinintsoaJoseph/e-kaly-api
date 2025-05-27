@@ -103,4 +103,57 @@ class RepasDAO {
         oci_free_statement($stmt);
         return $success;
     }
+
+    public function delete(Repas $repas): bool 
+    {
+        $conn = $this->db->getDatabase();
+        
+        // Vérifier que le repas appartient au gérant
+        $sqlCheck = "SELECT photo FROM Repas WHERE id_repas = :id_repas AND id_utilisateur = :id_utilisateur";
+        $stmtCheck = oci_parse($conn, $sqlCheck);
+
+        $id_repas = $repas->getId_repas(); 
+        $id_utilisateur = $repas->getId_utilisateur(); 
+
+        oci_bind_by_name($stmtCheck, ':id_repas', $id_repas);
+        oci_bind_by_name($stmtCheck, ':id_utilisateur', $id_utilisateur);
+        
+        if (!oci_execute($stmtCheck)) 
+        {
+            error_log("Erreur vérification propriétaire: " . oci_error($stmtCheck)['message']);
+            return false;
+        }
+        
+        $repasData = oci_fetch_assoc($stmtCheck);
+        oci_free_statement($stmtCheck);
+        
+        if (!$repasData) 
+        {
+            return false; // Le repas n'existe pas ou n'appartient pas à l'utilisateur
+        }
+
+        // Supprimer le fichier photo s'il existe
+        if (!empty($repasData['PHOTO'])) 
+        {
+            $photoPath = __DIR__ . '/../../../uploads/repas/' . $repasData['PHOTO'];
+            if (file_exists($photoPath)) 
+            {
+                unlink($photoPath);
+            }
+        }
+
+        $sql = "DELETE FROM repas WHERE id_repas = :id_repas"; 
+        $stmt = oci_parse($conn, $sql);
+
+        oci_bind_by_name($stmt, ':id_repas', $id_repas);
+
+        $success = oci_execute($stmt);
+        
+        if (!$success) {
+            error_log("Erreur de la suppression du repas: " . oci_error($stmt)['message']);
+        }
+        
+        oci_free_statement($stmt);
+        return $success;
+    }
 }
