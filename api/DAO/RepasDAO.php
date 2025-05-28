@@ -156,4 +156,34 @@ class RepasDAO {
         oci_free_statement($stmt);
         return $success;
     }
+
+    public function getAll(): array 
+    {
+        $conn = $this->db->getDatabase(); 
+        $sql = "SELECT * FROM repas ORDER BY id_repas";
+
+        $stmt = oci_parse($conn, $sql);
+
+        if (!oci_execute($stmt)) 
+        {
+            error_log("Erreur récupération repas: " . oci_error($stmt)['message']);
+            return [];
+        }
+
+        $repasList = [];
+        while ($row = oci_fetch_assoc($stmt)) 
+        {
+            $repas = new Repas();
+            $repas->setId_repas($row['ID_REPAS'])
+                ->setNom($row['NOM'])
+                ->setDescription($row['DESCRIPTION'])
+                ->setPhoto($row['PHOTO'])
+                ->setPrix($row['PRIX']);
+            
+            $repasList[] = $repas;
+        }
+
+        oci_free_statement($stmt);
+        return $repasList;
+    }
 }

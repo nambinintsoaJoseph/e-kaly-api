@@ -173,9 +173,40 @@ Echec
 }
 ``` 
 
+<h4>Récupérer tout le repas (agent)</h4>
+
+```raw
+http://localhost/e-kaly/api/routes/repas/recuperer.php
+``` 
+
+Succès 
+
+```json
+{
+    "success": true,
+    "repas": [
+        {
+            "id_repas": "21",
+            "nom": "La quiche lorraine",
+            "description": "Originaire de la Lorraine, dans le nord-est de la France...",
+            "photo": "/uploads/repas/683611198a0fe.jpeg",
+            "prix": "32000"
+        }, 
+        {
+            "id_repas": "22",
+            "nom": "Le boeuf Bourguignon",
+            "description": " Réputée pour ses fabuleux plats en sauce...",
+            "photo": "/uploads/repas/68ersae.jpeg",
+            "prix": "30000"
+        }
+    ]
+}
+
+```
+
 <h2>Commande</h2> 
 
-<h4>Création d'une commande (client)</h4> 
+<h4>Création d'une commande (agent)</h4> 
 
 Header
 
@@ -209,7 +240,7 @@ Echec
 }
 ```
 
-<h4>Ajouter un repas dans une commande (client)</h4> 
+<h4>Ajouter un repas dans une commande (agent)</h4> 
 
 ```raw
 POST http://localhost/e-kaly/api/routes/commanderepas/ajouter.php
