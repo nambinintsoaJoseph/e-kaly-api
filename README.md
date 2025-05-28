@@ -1,63 +1,41 @@
-<h2>Utilisateur</h4> 
+<h2>Repas</h2>
 
-<h4>Créer un utilisateur</h4> 
+<h4>Récupérer tout le repas (agent)</h4>
 
 ```raw
-http://localhost/e-kaly/api/routes/utilisateur/creer.php
+GET http://localhost/e-kaly/api/routes/repas/recuperer.php
 ``` 
 
-Body
-
-```json
-{	
-    "nom": "string", 
-    "prenom": "string", 
-    "email": "string",
-    "mot_passe": "string", 
-    "role": "agent|gerant"
-}
-```
-
-```json
-{
-    "success": true,
-    "message": "Utilisateur créé avec succès."
-}
-```
-
-<h4>Authentifier un utilisateur</h4>
+Headers
 
 ```raw
-http://localhost/e-kaly/api/routes/utilisateur/login.php
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI...
 ```
 
-Body 
-
-```json
-{	
-    "email": "string",
-    "mot_passe": "string"
-}
-```
 Succès 
 
 ```json
 {
     "success": true,
-    "token": "eyJhbGciOi..."
+    "repas": [
+        {
+            "id_repas": "21",
+            "nom": "La quiche lorraine",
+            "description": "Originaire de la Lorraine, dans le nord-est de la France...",
+            "photo": "/uploads/repas/683611198a0fe.jpeg",
+            "prix": "32000"
+        }, 
+        {
+            "id_repas": "22",
+            "nom": "Le boeuf Bourguignon",
+            "description": " Réputée pour ses fabuleux plats en sauce...",
+            "photo": "/uploads/repas/68ersae.jpeg",
+            "prix": "30000"
+        }
+    ]
 }
 ```
-
-Echec 
-
-```json
-{
-    "success": false,
-    "message": "Echec d'authentification."
-}
-```
-
-<h2>Repas</h2>
 
 <h4>Ajouter un repas (gerant)</h4> 
 
@@ -173,40 +151,62 @@ Echec
 }
 ``` 
 
-<h4>Récupérer tout le repas (agent)</h4>
+<h2>Commande</h2> 
+
+<h4>Récupère toutes les commandes d'un agent avec les repas associés</h4>
 
 ```raw
-http://localhost/e-kaly/api/routes/repas/recuperer.php
-``` 
+GET http://localhost/e-kaly/api/routes/commande/agent.php
+```
+
+Header 
+
+```raw
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5...
+```
 
 Succès 
 
 ```json
 {
     "success": true,
-    "repas": [
+    "commandes": [
         {
-            "id_repas": "21",
-            "nom": "La quiche lorraine",
-            "description": "Originaire de la Lorraine, dans le nord-est de la France...",
-            "photo": "/uploads/repas/683611198a0fe.jpeg",
-            "prix": "32000"
-        }, 
-        {
-            "id_repas": "22",
-            "nom": "Le boeuf Bourguignon",
-            "description": " Réputée pour ses fabuleux plats en sauce...",
-            "photo": "/uploads/repas/68ersae.jpeg",
-            "prix": "30000"
+            "id_commande": "3",
+            "date_commande": "27-05-2025 - 18:23:49",
+            "gerant": "Jean Pierre",
+            "repas": [
+                {
+                    "id_repas": "21",
+                    "nom": "Paint au chocolat",
+                    "description": "Le pain au chocolat...",
+                    "photo": "/uploads/repas/683611198a0fe.jpeg",
+                    "prix_unitaire": "3000",
+                    "quantite": "2",
+                    "sous_total": 6000
+                }, 
+                {
+                    "id_repas": "21",
+                    "nom": "Macaroni au fromage",
+                    "description": "Le macaroni au fromage, familièrement...",
+                    "photo": "/uploads/repas/683611198asere.jpeg",
+                    "prix_unitaire": "10000",
+                    "quantite": "1",
+                    "sous_total": 10000
+                },
+            ],
+            "total": 16000
         }
     ]
 }
-
 ```
 
-<h2>Commande</h2> 
-
 <h4>Création d'une commande (agent)</h4> 
+
+```raw
+POST http://localhost/e-kaly/api/routes/commande/creer.php
+``` 
 
 Header
 
@@ -215,10 +215,6 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI...
 ```
 
-
-```raw
-POST http://localhost/e-kaly/api/routes/commande/creer.php
-``` 
 
 id_utilisateur récuperé depuis le token
 
@@ -280,3 +276,62 @@ Echec
     "message": "Erreur lors de l'ajout du repas dans la commande."
 }
 ``` 
+
+<h2>Utilisateur</h4> 
+
+<h4>Créer un utilisateur</h4> 
+
+```raw
+POST http://localhost/e-kaly/api/routes/utilisateur/creer.php
+``` 
+
+Body
+
+```json
+{	
+    "nom": "string", 
+    "prenom": "string", 
+    "email": "string",
+    "mot_passe": "string", 
+    "role": "agent|gerant"
+}
+```
+
+```json
+{
+    "success": true,
+    "message": "Utilisateur créé avec succès."
+}
+```
+
+<h4>Authentifier un utilisateur</h4>
+
+```raw
+POST http://localhost/e-kaly/api/routes/utilisateur/login.php
+```
+
+Body 
+
+```json
+{	
+    "email": "string",
+    "mot_passe": "string"
+}
+```
+Succès 
+
+```json
+{
+    "success": true,
+    "token": "eyJhbGciOi..."
+}
+```
+
+Echec 
+
+```json
+{
+    "success": false,
+    "message": "Echec d'authentification."
+}
+```
