@@ -208,3 +208,44 @@ Echec
     "message": "Erreur de la création du commande."
 }
 ```
+
+<h4>Ajouter un repas dans une commande (client)</h4> 
+
+```raw
+POST http://localhost/e-kaly/api/routes/commanderepas/ajouter.php
+```
+
+Header 
+
+```raw
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI...
+``` 
+
+Body 
+
+```json 
+{
+    "id_repas": number, 
+    "id_commande": number, 
+    "quantite": number
+}
+``` 
+
+Succès 
+
+```json
+{
+    "success": true,
+    "message": "Repas ajouté à la commande."
+}
+```
+
+Echec 
+
+```json  
+{
+    "success": false, 
+    "message": "Erreur lors de l'ajout du repas dans la commande."
+}
+``` 
