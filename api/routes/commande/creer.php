@@ -49,12 +49,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
     $commandeDAO = new CommandeDAO($databaseConnection); 
 
     $commande->setId_utilisateur($payload['id_utilisateur']); 
+    $id_commande = $commandeDAO->create($commande);
 
-    if($commandeDAO->create($commande))
+    if($id_commande)
     {
-        http_response_code(200); 
+        http_response_code(201); 
         echo json_encode([
             "success" => true, 
+            "id_commande" => $id_commande,
             "message" => "Commande créée avec succès."
         ]); 
     }

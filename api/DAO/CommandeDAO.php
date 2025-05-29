@@ -17,27 +17,31 @@ class CommandeDAO
     public function create(Commande $commande): ?int 
     {
         $conn = $this->db->getDatabase(); 
-        $sql = "INSERT INTO commande(id_utilisateur) VALUES(:id_utilisateur)"; 
-
+        
+        $sql = "INSERT INTO commande(id_utilisateur) 
+                VALUES(:id_utilisateur)
+                RETURNING id_commande INTO :new_id";
+        
         $stmt = oci_parse($conn, $sql); 
 
-        $id_utilisateur = $commande->getId_utilisateur(); 
+        $id_utilisateur = $commande->getId_utilisateur();
+        $newId = 0;
 
-        oci_bind_by_name($stmt, ':id_utilisateur', $id_utilisateur); 
+        oci_bind_by_name($stmt, ':id_utilisateur', $id_utilisateur);
+        oci_bind_by_name($stmt, ':new_id', $newId, -1, SQLT_INT); 
+
         $result = oci_execute($stmt); 
 
-        if($result) 
-        {
-            oci_commit($conn); 
-        }
-        else 
-        {
+        if($result) {
+            oci_commit($conn);
+            return $newId; 
+        } else {
             $error = oci_error($stmt); 
-            error_log("Erreur oci : " . $error['message']); 
+            error_log("Erreur Oracle [create commande]: " . $error['message']); 
+            return null;
         }
 
         oci_free_statement($stmt); 
-        return $result; 
     }
 
     /**

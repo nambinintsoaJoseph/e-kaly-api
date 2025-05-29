@@ -260,6 +260,7 @@ Succès
 ```json 
 {
     "success": true,
+    "id_commande": 4, 
     "message": "Commande créée avec succès."
 }
 ``` 
