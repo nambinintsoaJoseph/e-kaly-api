@@ -3,7 +3,7 @@
 <h4>Récupérer tout le repas (agent)</h4>
 
 ```raw
-GET http://localhost/e-kaly/api/routes/repas/recuperer.php
+GET http://localhost/e-kaly/api/routes/repas/agent.php
 ``` 
 
 Headers
@@ -37,7 +37,44 @@ Succès
 }
 ```
 
-<h4>Ajouter un repas (gerant)</h4> 
+<h4>Récupère tous les repas ajoutés par un gérant spécifique</h4>
+
+```raw
+GET http://localhost/e-kaly/api/routes/repas/gerant.php
+```
+
+Headers
+
+```raw
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs... 
+```
+
+Succès 
+
+```json
+{
+    "success": true,
+    "repas": [
+        {
+            "id_repas": "21",
+            "nom": "Paint au chocolat",
+            "description": "Le pain au chocolat...",
+            "photo": "/uploads/repas/683611198a0fe.jpeg",
+            "prix": "3000"
+        },
+        {
+            "id_repas": "22",
+            "nom": "Spaghetti à la carbonara",
+            "description": "Plat italien....",
+            "photo": "/uploads/repas/6836111sqezr12de.jpeg",
+            "prix": "25000"
+        }
+    ]
+}
+```
+
+<h4>Ajouter un repas (gérant)</h4> 
 
 ```raw
 POST http://localhost/e-kaly/api/routes/repas/ajouter.php
@@ -79,7 +116,7 @@ Echec
 }
 ```
 
-<h4>Modifier un repas (gerant)</h4> 
+<h4>Modifier un repas (gérant)</h4> 
 
 ```raw
 PUT http://localhost/e-kaly/api/routes/repas/modifier.php?id_repas={number}
@@ -120,7 +157,7 @@ Echec
 }
 ``` 
 
-<h4>Supprimer un repas (gerant)</h4> 
+<h4>Supprimer un repas (gérant)</h4> 
 
 ```raw
 DELETE http://localhost/e-kaly/api/routes/repas/supprimer.php?id_repas={number}

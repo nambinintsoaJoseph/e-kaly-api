@@ -186,4 +186,47 @@ class RepasDAO {
         oci_free_statement($stmt);
         return $repasList;
     }
+
+    /**
+        * Récupère tous les repas ajoutés par un gérant spécifique
+        * @param int $id_utilisateur - ID du gérant propriétaire
+        * @return array - Tableau d'objets Repas
+    */
+    public function getRepasByGerant(int $id_utilisateur): array
+    {
+        $conn = $this->db->getDatabase();
+        
+        $sql = "SELECT r.*
+                FROM Repas r
+                JOIN Utilisateur u ON r.id_utilisateur = u.id_utilisateur
+                WHERE r.id_utilisateur = :id_utilisateur
+                AND u.role = 'gerant'
+                ORDER BY r.id_repas DESC";
+        
+        $stmt = oci_parse($conn, $sql);
+        oci_bind_by_name($stmt, ':id_utilisateur', $id_utilisateur);
+
+        if (!oci_execute($stmt)) 
+        {
+            error_log("Erreur récupération repas gérant: " . oci_error($stmt)['message']);
+            return [];
+        }
+
+        $repasList = [];
+        while ($row = oci_fetch_assoc($stmt)) 
+        {
+            $repas = new Repas();
+            $repas->setId_repas($row['ID_REPAS'])
+                ->setId_utilisateur($row['ID_UTILISATEUR'])
+                ->setNom($row['NOM'])
+                ->setDescription($row['DESCRIPTION'])
+                ->setPhoto($row['PHOTO'])
+                ->setPrix($row['PRIX']);
+            
+            $repasList[] = $repas;
+        }
+
+        oci_free_statement($stmt);
+        return $repasList;
+    }
 }
